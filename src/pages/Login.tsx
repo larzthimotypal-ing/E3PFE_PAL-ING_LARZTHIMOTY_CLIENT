@@ -1,7 +1,13 @@
+import { countReset } from 'console';
 import {useState, SyntheticEvent} from 'react'
+import {useHistory} from 'react-router-dom'
 const Login = () => {
+    const apiUrl = "http://localhost:8000/api/login";
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const history = useHistory();
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -10,14 +16,15 @@ const Login = () => {
             password
         }
 
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(data),
-            credentials: 'include',
-            headers: new Headers({
-                'Content-Type': 'appication/json'})
-            
-          }
+        
+        await fetch(apiUrl, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          credentials: 'include',
+          body: JSON.stringify(data)
+        })
+        history.push("/home");
+        
 
     }
     return (
@@ -32,7 +39,7 @@ const Login = () => {
             </div>
             <div className="form-floating">
               <input type="password" className="form-control" id="floatingPassword" placeholder="Password"
-              onChange={e=>setEmail(e.target.value)}/>
+              onChange={e=>setPassword(e.target.value)}/>
               <label htmlFor="floatingPassword">Password</label>
             </div>
 
